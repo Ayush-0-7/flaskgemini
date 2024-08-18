@@ -1,41 +1,24 @@
 from flask import Flask, request, jsonify
 import google.generativeai as genai
-import os
-
+from config import *
 app = Flask(__name__)
 
-# Set up the API key for Google Generative AI (load from environment for better security)
-genai.configure(api_key='AIzaSyDZwBpgfvc4rMwbEz0Jhkq6B5ADnJpaJM8')
-@app.route('/')
-def main():
-    return "Hello from Ayush ki duniya !"
+# Set up the API key for Google Generative AI
+genai.configure(api_key=api_keys)
+
 @app.route('/genai2', methods=['POST'])
 def genai2():
     # Extract the prompt from the incoming POST request
-    question1 = request.json.get('question1')
-    if not question1:
-        return jsonify({"error": "No question1 provided"}), 400
-
-    prompt = question1 + 'Hey from the given text extract the product name, product price, product discount, and product link in json format and return the json format only.'
+    prompt = request.json.get('question1')+'Hey from the given text extract the product name product price product discount and product link in json format and return the json format only.'
+    
+    if not prompt:
+        return jsonify({"error": "No prompt provided"}), 400
 
     # Generate content using the Generative AI model
-    try:
-        # Use the correct model name (e.g., 'models/text-bison-001')
-        response = genai.generate_text(
-            model='models/text-bison-001',  # Replace with the correct model name
-            prompt=prompt
-        )
-        
-        # Extract generated text from the response
-        if response and response.candidates:
-            generated_text = response.candidates[0]['output']  # Get the first candidate's output
-        else:
-            generated_text = "No result generated"
+    model = genai.GenerativeModel('gemini-1.5-flash')
+    response = model.generate_content(prompt)
 
-        return jsonify({"answer": generated_text})
-    except Exception as e:
-        # Return the error message in case of failure
-        return jsonify({"error": str(e)}), 500
+    # Extract and return the text response
+    generated_text = response.text
+    return jsonify({"answer": generated_text})
 
-if __name__ == '__main__':
-    app.run(debug=True)
