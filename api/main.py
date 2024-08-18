@@ -4,7 +4,7 @@ from config import *
 app = Flask(__name__)
 
 # Set up the API key for Google Generative AI
-genai.configure(api_key=api_keys)
+genai.configure(api_key='AIzaSyDZwBpgfvc4rMwbEz0Jhkq6B5ADnJpaJM8')
 @app.route('/')
 def main():
     return "Hello there my script is running well."
