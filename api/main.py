@@ -25,3 +25,5 @@ def genai2():
     generated_text = response.text
     return jsonify({"answer": generated_text})
 
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)  # Ensure it's running on port 5000
