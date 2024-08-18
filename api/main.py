@@ -8,7 +8,7 @@ app = Flask(__name__)
 genai.configure(api_key='AIzaSyDZwBpgfvc4rMwbEz0Jhkq6B5ADnJpaJM8')
 @app.route('/')
 def main():
-    return "Hello from Ayush ki duniya."
+    return "Hello from Ayush ki duniya !"
 @app.route('/genai2', methods=['POST'])
 def genai2():
     # Extract the prompt from the incoming POST request
@@ -20,9 +20,9 @@ def genai2():
 
     # Generate content using the Generative AI model
     try:
-        # Generate response using the Gemini model
+        # Use the correct model name (e.g., 'models/text-bison-001')
         response = genai.generate_text(
-            model='gemini-1.5-turbo',  # 'gemini-1.5-flash' may need to be updated to 'gemini-1.5-turbo' if necessary
+            model='models/text-bison-001',  # Replace with the correct model name
             prompt=prompt
         )
         
